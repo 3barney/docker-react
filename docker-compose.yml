@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  web:
+    restart: always
+    build:
+      context: . # specify where we want this image file to be pulled from
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules # says do not map a folder to node_modules in the container
+      - .:/app  # Map current dir (.) to /app directory in container  
+  tests:
+    build:
+      context: . # specify where we want this image file to be pulled from
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules # i.e dont ovverride this, says do not map a folder to node_modules in the container
+      - .:/app  # Map current dir (.) to /app directory in container
+    command: ["npm", "run", "test"] # ovveride startup command
